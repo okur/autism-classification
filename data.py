@@ -14,8 +14,12 @@ def load_data(training_path="dataset/train.csv", testing_path="dataset/test.csv"
     test_dataset = pd.read_csv(testing_path)
     if shuffle_data == True:    
         training_dataset = shuffle(training_dataset)
-    return(training_dataset.values[:,:training_dataset.shape[1]-1], training_dataset.values[:,-1:], test_dataset.values)
+    return(training_dataset.iloc[:,:training_dataset.shape[1]-1], training_dataset.iloc[:,-1:], test_dataset)
     
 def write_output(data, path="submit.csv"):
     result = np.concatenate((np.arange(1,data.shape[0]+1).reshape((data.shape[0],1)),data), axis=1)
     np.savetxt(path, result, delimiter=",", header='ID,Predicted', comments='', fmt='%1d')
+
+def feature_importance(array, new_header):
+    with open("importance.csv", 'wb') as abc:
+        np.savetxt(abc, array, delimiter=",", header=new_header)
